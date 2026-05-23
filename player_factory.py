@@ -6,7 +6,7 @@ from model.strategy import AggressiveStrategy, CautiousStrategy, AnalystStrategy
 class PlayerFactory:
 
     NAMES = [
-        "Loshok", "Yura", "Zenya", "Sakura",
+        "Loshok", "Yura Uchiha", "Zenya", "Sakura",
         "Hinata", "Naruto", "Ronaldo", "Saske",
         "Gojo", "Messi",
     ]
