@@ -1,12 +1,10 @@
-# main.py (тимчасовий тест)
+from model.revolver import Revolver
 
-from model.card import Deck
-
-deck = Deck()
-print(f"Карт в колоді: {len(deck)}")
-
-deck.shuffle()
-hand = deck.deal(5)
-
-print(f"Роздано: {hand}")
-print(f"Залишилось: {len(deck.cards)}")
+rev = Revolver()
+for i in range(6):
+    result = rev.pull_trigger()
+    if result:
+        print(f"Постріл {i + 1}: БАХ!")
+        break
+    else:
+        print(f"Постріл {i + 1}: клік... пусто")
