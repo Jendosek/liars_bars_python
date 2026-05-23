@@ -1,10 +1,17 @@
-from model.revolver import Revolver
+from model.card import Deck, CardType
+from model.strategy import AggressiveStrategy, CautiousStrategy, AnalystStrategy
 
-rev = Revolver()
-for i in range(6):
-    result = rev.pull_trigger()
-    if result:
-        print(f"Постріл {i + 1}: БАХ!")
-        break
-    else:
-        print(f"Постріл {i + 1}: клік... пусто")
+deck = Deck()
+deck.shuffle()
+hand = deck.deal(5)
+
+print(f"Рука: {hand}")
+print(f"Карта раунду: Queen")
+print()
+
+for name, strategy in [("Агресор", AggressiveStrategy()),
+                        ("Обережний", CautiousStrategy()),
+                        ("Аналітик", AnalystStrategy())]:
+    cards, count = strategy.choose_cards(hand, CardType.QUEEN)
+    call = strategy.should_call_liar(2, CardType.QUEEN, hand)
+    print(f"{name}: кладе {cards}, викликає Liar: {call}")
