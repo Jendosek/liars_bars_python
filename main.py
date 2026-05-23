@@ -1,16 +1,12 @@
-# This is a sample Python script.
+# main.py (тимчасовий тест)
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+from model.card import Deck
 
+deck = Deck()
+print(f"Карт в колоді: {len(deck)}")
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+deck.shuffle()
+hand = deck.deal(5)
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(f"Роздано: {hand}")
+print(f"Залишилось: {len(deck.cards)}")
