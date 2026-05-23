@@ -1,25 +1,36 @@
-# from model.card import Deck, CardType
-# from model.player import AIPlayer
-# from model.strategy import AggressiveStrategy
-#
-# deck = Deck()
-# deck.shuffle()
-#
-# bot = AIPlayer("Bot1", AggressiveStrategy())
-# bot.hand = deck.deal(5)
-#
-# print(f"{bot.name}, рука: {bot.hand}")
-#
-# cards, count = bot.select_cards(CardType.QUEEN, None)
-# print(f"Кладе: {cards} (заявляє {count} Queen)")
-#
-# call = bot.decide_liar(2, CardType.QUEEN, None)
-# print(f"Викликає Liar: {call}")
+from model.card import CardType
+from model.player import AIPlayer
+from model.strategy import AggressiveStrategy, CautiousStrategy
+from model.game import Game
 
-from player_factory import PlayerFactory
+bot1 = AIPlayer("Gojo", AggressiveStrategy())
+bot2 = AIPlayer("Ronaldo", CautiousStrategy())
 
-factory = PlayerFactory()
-bots = factory.create_ai_players(3)
+game = Game([bot1, bot2])
+game.start_new_round()
 
-for bot in bots:
-    print(f"{bot.name} — стратегія: {bot.strategy.__class__.__name__}")
+r = game.current_round
+print(f"Карта раунду: {r.round_card.value}")
+print(f"Рука {bot1.name}: {bot1.hand}")
+print(f"Рука {bot2.name}: {bot2.hand}")
+
+cards, count = bot1.select_cards(r.round_card, None)
+print(f"\n{bot1.name} кладе {cards}")
+bot1.remove_cards(cards)
+r.play_cards(cards)
+
+# Бот2 вирішує чи кликати Liar
+is_liar_call = bot2.decide_liar(count, r.round_card, None)
+print(f"{bot2.name} кличе Liar: {is_liar_call}")
+
+if is_liar_call:
+    was_lying = r.check_liar(cards)
+    if was_lying:
+        print(f"{bot1.name} брехав! Крутить револьвер...")
+        game.pull_trigger(bot1)
+    else:
+        print(f"{bot1.name} був чесний! {bot2.name} крутить револьвер...")
+        game.pull_trigger(bot2)
+
+print(f"\n{bot1.name} живий: {bot1.is_alive}")
+print(f"{bot2.name} живий: {bot2.is_alive}")
